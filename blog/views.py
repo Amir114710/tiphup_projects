@@ -38,7 +38,8 @@ class DetailsViewPost(DetailView):
         parent_id = request.POST.get('parent_id')
         message = request.POST.get('message')
         Comments.objects.create(message=message, parent_id=parent_id , posts=posts , user=request.user)
-        Notification.objects.create(user=request.user , body='کامنت شما با موفقیت ثبت شد')
+        if Comments.parent is not None:
+            Notification.objects.create(user=request.user , body='نظر شما با موفقیت ثبت شد')
         return redirect('blog_app:details' , slug)
     # def get(self,request,slug):
     #     queryset = Post.objects.get(slug = slug)
