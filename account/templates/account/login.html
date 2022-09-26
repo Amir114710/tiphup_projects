@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+ورود
+{% endblock %}
+{% block content %}
+
+
+<main>
+    <section class="py-5">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-sm-9 col-md-7 col-lg-5">
+                    <div class="custom-bg p-2">
+
+                        <div class="my-3 text-center">ورود به حساب</div>
+                        <form  class="" method="POST">
+                            {% csrf_token %}
+                            {{form.errors}}
+                            {% if errors %}
+                                {% for item in errors %}
+                                    <p class="text text-danger bg-white rounded" dir="rtl">{{item}}</p>
+                                {% endfor %}
+                            {% endif %}
+                            <div  class="field" >
+                                    <i class="fa fa-envelope"></i>
+                                    {{form.username}}
+                            </div>
+
+                            <div class="field">
+                                    <i class="fa fa-lock"></i>
+                                    {{form.password}}
+                            </div>
+                            <div class="mr-1 d-flex justify-content-between">
+                                    <div>
+                                        <input type="checkbox" class="checkbox-input" tabindex="0">
+                                    <label class="small">نمایش گذرواژه</label>
+                                    </div>
+                                    <div>
+                                        <a href="/accounts/password_reset" class="small">رمز عبور خود را فراموش کرده اید؟</a>
+                                    </div>
+                            
+                            </div>
+
+                            <div class="my-3">
+                                <button class="btn custom-btn w-100">ورود</button>
+                            </div>
+                            <div class="pb-2 border-bottom">
+                                <span class="small">حساب کاربری ندارید؟</span>
+                            <a href="{% url 'account:register' %}" class="small">
+                                عضویت در سایت
+                            </a>
+                            </div>
+                        </form>
+
+
+                        <div class="">
+                            <p class="small text-center my-3">ورود از طریق حساب‌های کاربری دیگر</p>
+                            <div class="" >
+
+                                    <div class="social-accunt">
+                                        <a title="Google" class="" href="{% url 'social:begin' 'google-oauth2' %}">
+                                            <img height="24" src="{% static "image/google.svg" %}" class="d-block m-auto">
+                                        </a>
+
+                                        <a title="GitHub" class="" href="">
+                                            <img height="24" src="{% static "image/github.svg" %}" class="d-block m-auto">
+                                        </a>
+
+                                        <a title="LinkedIn" class="" href="">
+                                            <img height="24" src="{% static "image/linkedin.svg" %}" class="d-block m-auto">
+                                        </a>
+
+                                    </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="{% static "components/bootstrap/bootstrap.bundle.js" %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+<script src="{% static "components/owl-carousel/owl.carousel.min.js" %}"></script>
+<script src="{% static "js/script.js" %}"></script>
+<script>
+    let checkboxInput = document.querySelector('.checkbox-input')
+    let passwordInput = document.querySelector('.password-input')
+    let isHide = true
+    checkboxInput.addEventListener('click' , ()=>{
+        if(isHide){
+            passwordInput.type = 'text'
+            isHide = false
+        }else{
+            passwordInput.type = 'password'
+            isHide = true
+        }
+    })
+
+</script>
+{% endblock %}

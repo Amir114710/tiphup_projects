@@ -1,0 +1,16 @@
+{% load static %}
+<h1>Log in</h1>
+
+{% if request.user.is_authenticated %}
+    <p>you are log in now.</p>
+
+
+    <a href="{% url 'logout/' %}">Log out</a>
+
+{% else %}
+    <form method="post" action="">
+        {% csrf_token %}
+        {{form}}
+        <button type="submit">Log in </button>
+    </form>
+{% endif %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+{{ request.user.email }}
+{% endblock %}
+{% block content %}
+<main>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-sm-9 col-md-8 col-lg-8">
+                   
+                        <!-- item1 -->
+
+                        <div class="p-3 custom-bg user-details user-item my-2">
+                            <div class="row">
+                                <div class="col-lg-6 mb-4">
+                                    <p class="">نام و نام خانوادگی:</p>
+                                    {% if request.user.Full_name %}
+                                    {{ request.user.Full_name }}
+                                    {% else %}
+                                    <h6 class=" font-weight-bold">___</h6>
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-6 mb-4">
+                                    <p class="">پست الکترونیک:</p>
+                                    {{request.user.email}}
+                                </div>
+                                <div class="col-lg-6 mb-4">
+                                    <p class="">شماره تلفن همراه:</p>
+                                    {% if request.user.number %}
+                                    {{ request.user.number }}
+                                    {% else %}
+                                    <h6 class=" font-weight-bold">___</h6>
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-6 mb-4">
+                                    <p class="">نام کاربری:</p>
+                                    {% if request.user.username %}
+                                    {{ request.user.username }}
+                                    {% else %}
+                                    <h6 class=" font-weight-bold">___</h6>
+                                    {% endif %}                                </div>
+                                <div class="col-12">
+                                    <div class="text-center">
+                                        <a class="" href="{% url 'account:profile-edit' %}">
+                                            <i class="fa fa-edit"></i>
+                                            ویرایش اطلاعات شخصی
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+    </section>
+
+
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="{% static "components/bootstrap/bootstrap.bundle.js" %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+<script src="{% static "components/owl-carousel/owl.carousel.min.js" %}"></script>
+<script src="{% static "js/script.js" %}"></script>
+<script>
+
+</script>
+{% endblock %}

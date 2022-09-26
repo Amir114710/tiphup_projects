@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+{{posts.title}}
+{% endblock %}
+{% block content %}
+<main>
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div>
+                        <!-- video -->
+                        <div class="video-player-box">
+                            <div class="video-icon">
+                                <div class="btn video-btn" onclick="playvideo()" id="videobtn">
+                                    <img src="{% static "image/play-video-btn.png" %}" alt="">
+                                </div>
+                            </div>
+                            <div class="video">
+                                <video width="100%" id="myVideo" utoplayer>
+                                    <source src="{{posts.video.url}}" type="video/mp4">
+                                </video>
+                                <img src="{% static "image/p2.jpg" %}" width="100%" height="100%"
+                                    class="position-absolute video-poster" alt="">
+
+                                <div class="video-overlay"></div>
+                                <div class="video-description px-2 text-white">
+                                    <p> {{posts.time}} دقیقه</p>
+                                </div>
+                                <h5 class="close-btn" onclick="stopPlayer()">X</h5>
+                            </div>
+                        </div>
+                        <!-- end video -->
+                        <!-- title -->
+                        <h3 class="video-title my-3">{{posts.title}}</h3>
+                        <div class="d-flex align-items-center justify-content-between border-bottom pb-3">
+                            <p class="color78">{{posts.created}}</p>
+                            <div class="d-flex align-items-center view-like">
+                                <div class="mx-3">
+                                    <span>{{posts.views}}</span>
+                                    <i class="fa fa-eye"></i>
+                                </div>
+                                <div>  
+                                    {% if is_liked %}
+                                    <i onclick="like('{{posts.slug}}' , '{{posts.id}}')" id="like" style="color:red" class="fa-solid fa-heart"><span id="count">{{posts.likes2.count}}</span></i></a>                                    
+                                    {% else %}
+                                    <i onclick="like('{{posts.slug}}' , '{{posts.id}}')" id="like" style="color:red" class="fa-regular fa-heart"><span id="count">{{posts.likes2.count}}</span></i></a>
+                                    {% endif %}
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- description -->
+                        <div class="border-bottom pb-3">
+                            <h4 class="my-3" id="body">درباره فیلم</h4>
+                            <p class="color78">{{posts.discripsion}}</p>
+
+                            <div class="labels">
+                                <h4 class="my-3">برچسب ها</h4>
+                                <ul class="d-flex align-items-center">
+                                    {% for tag in posts.tag.all %}
+                                        {{tag.title}}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- end des -->
+
+                        <!-- comments -->
+                        <div>
+
+                            <div class="py-3">
+                                <span>{{posts.comment.count}}</span>
+                                <span>نظر</span>
+                            </div>
+                            <form method="post" action="">
+                                {% csrf_token %}
+                                <input type="hidden" name='parent_id'  id="parent_id" placeholder="parent_id">
+                                <textarea class="w-100 p-2 comment-area" name="message" id="" cols="30" rows="10"
+                                placeholder="دیدگاه خود را بنویسید"></textarea>
+                            <div class="d-flex align-items-center justify-content-end pt-3">
+                                <button type="submit" class="btn custom-btn">ارسال نظر</button>
+                            </div>
+                            </form>
+                            <!-- comment -->
+                            {% for comment in posts.comment.all %}
+                                {% if comment.parent == None %}
+                                <div class="comment my-3 p-2">
+                                    <div class=" d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            {% if comment.user.image.url != None %}
+                                            <img src="{{comment.user.image.url}}" alt="student" class="user-profile">
+                                            {% else %}
+                                            <img src="{% static "image/sutdent-prof.png" %}" alt="student" class="user-profile">
+                                            {% endif %}
+                                            <p class="user-name pr-2">{{comment.user.email}}</p>
+                                        </div>
+    
+                                        <p class="comment-date-time">{{comment.created}}</p>
+                                    </div>
+                                    <p class="px-4 py-2 comment-text text-justify">{{comment.message}}</p>
+                                    <div class="d-flex align-items-center justify-content-end reply" type='button' onclick="set_value({{ comment.id }})">
+                                        <i class="fa fa-reply"></i>
+                                        <p>پاسخ به این نظر</p>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% for reply in comment.replies.all %}
+                                <div class="comment my-3 p-2 comment-child">
+                                    <div class=" d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            {% if reply.user.image.url != None %}
+                                            <img src="{{reply.user.image.url}}" alt="student" class="user-profile">
+                                            {% else %}
+                                            <img src="{% static "image/sutdent-prof.png" %}" alt="student" class="user-profile">
+                                            {% endif %}                                            
+                                            <p class="user-name pr-2">{{reply.user.email}}</p>
+                                        </div>
+    
+                                        <p class="comment-date-time">{{reply.created}}</p>
+                                    </div>
+                                    <p class="px-4 py-2 comment-text text-justify">{{reply.message}}</p>
+                                </div>
+                                {% endfor %}
+                            {% endfor %}
+                            
+
+
+
+                        </div>
+                        <!-- end comments -->
+
+                    </div>
+                </div>
+                <!-- main -->
+                <!-- side -->
+                <aside class="col-md-4 ">
+                    <div class="custom-bg p-2 teacher-card">
+                        <div class="border-bottom py-3 text-center">
+                            <h4>درباره استاد</h4>
+                        </div>
+                        <div class="d-flex align-items-center py-3">
+                            <img src="{{posts.author.image.url}}" alt="student" class="teacher-profile">
+                            <p class="user-name pr-2">{{posts.author}} </p>
+                        </div>
+                        <p class="color78 teacher-description py-3">{{posts.author.discripsion}}</p>
+
+                            <div class="teacher-social-media d-flex align-items-center justify-content-center flex-wrap">
+                                <a href=""> <i class="fa fa-instagram"></i></a>
+                                <a href=""> <i class="fa fa-github"></i></a>
+                                <a href=""> <i class="fa fa-linkedin"></i></a>
+                                <a href=""> <i class="fa fa-twitter"></i></a>
+                            </div>
+                    </div>
+                </aside>
+
+                <!-- end side -->
+            </div>
+        </div>
+    </section>
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="{% static "components/bootstrap/bootstrap.bundle.js" %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+<script src="{% static "components/owl-carousel/owl.carousel.min.js" %}"></script>
+<script src="{% static "js/script.js" %}"></script>
+<script src="{% static "js/jquery.min.js" %}"></script>
+<script>
+    // video-player
+    const videobtn = document.querySelector('.video-btn');
+    const video = document.querySelector('.video');
+    const videotag = document.querySelector('video')
+    const videoDescription = document.querySelector('.video-description')
+    const closeBtn = document.querySelector('.close-btn')
+    const videoPoster = document.querySelector('.video-poster')
+    const videoOverlay = document.querySelector('.video-overlay')
+    function stopPlayer() {
+        videobtn.style.display = "block";
+        closeBtn.style.display = 'none';
+        videoPoster.style.display = 'inline'
+        video.style.zIndex = '-1'
+        videotag.pause()
+        videotag.style.borderRadius = '20px'
+        videoDescription.style.display = 'flex'
+        videotag.controls = false
+        videotag.style.borderRadius = '15px'
+        videoOverlay.style.display = 'block'
+    };
+
+    function playvideo() {
+        videobtn.style.display = "none";
+        video.style.zIndex = '22222'
+        videotag.autoplay = true
+        videotag.play()
+        videotag.style.borderRadius = '20px'
+        videotag.controls = true
+        videoDescription.style.display = 'none'
+        closeBtn.style.display = 'block'
+        videoPoster.style.display = 'none'
+        videoOverlay.style.display = 'none'
+    }
+</script>
+<script>
+    function like(slug , id){
+    var element = document.getElementById("like")
+    var count = document.getElementById("count")
+    $.get(`/like/${slug}/${id}`).then(response =>{
+        if(response['response'] === "liked"){
+            element.className = "fa-solid fa-heart"
+            count.innerText = Number(count.innerText) + 1
+        }
+        else{
+            element.className = "fa-regular fa-heart"
+            count.innerText = Number(count.innerText) - 1
+        }
+    })
+}
+</script>
+<script>
+    function set_value(id) {
+        document.getElementById('parent_id').value = id;
+        window.location.href = '#body'
+    }
+</script>
+{% endblock %}
+

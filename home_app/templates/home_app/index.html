@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load static %}
+{% load render_partial %}
+
+{% block title %}
+مجله
+{% endblock %}
+{% block content %}
+<main>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h2 class="title-section">تازه ترین ویدیو ها</h2>
+                <a href="{% url 'blog_app:blog' %}" class="btn custom-btn">
+                    نمایش همه
+                </a>
+            </div>
+            <div class="row">
+                <!-- item -->
+                    {% for post in recent_posts %}
+                    <div class="col-md-6 col-lg-4 my-2">
+                        <div class="custom-bg">
+                            <div class="video-card">
+                                <a href="/details/{{post.slug}}" class="position-relative d-block ">
+                                    <!-- <img src="{% static "image/m1.jpg" %}" alt="" class="img-fluid w-100 h-100"> -->
+                                    <img src="{{post.image.url }}" alt="" class="img-fluid w-100 h-100">
+                                    <div class="video-play-btn">
+                                        <i class="fa fa-play"></i>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between video-category-time">
+                                        <h6 class="">{{post.categories.first}}</h6>
+                                        <span class="vid-time">{{post.time}}دقیقه</span>
+                                    </div>
+                                    <div class="video-card-details">
+                                        <div>
+                                            <span>{{post.views}}</span>
+                                            <i class="fa fa-eye"></i>
+                                        </div>
+                                        <div>
+                                            <span>{{post.likes2.count}}</span>
+                                            <i class="fa fa-heart"></i>
+                                        </div>
+                                        <div>
+                                            <span>{{post.comment.count}}</span>
+                                            <i class="fa fa-comment"></i>
+                                        </div>
+                                    </div>
+                                    <div class="article-overlay"></div>
+                                </a>
+    
+                            </div>
+                            <a href="/details/{{post.title}}">
+                                <h5 class="video-card-title m-2">{{post.title}}</h5>
+                            </a>
+                            <div class="my-3 pb-3 mx-2">
+                                <i class="fa fa-user  ml-1 "></i>
+                                <span>{{post.author}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                <!-- end item -->
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h2 class="title-section">پسندیده شده ها</h2>
+                <a href="all-videos.html" class="btn custom-btn">
+                    نمایش همه
+                </a>
+            </div>
+            <div class="row">
+                <!-- item -->
+                {% for like in post_likes %}
+                    <div class="col-md-6 col-lg-4 my-2">
+                        <div class="custom-bg">
+                            <div class="video-card">
+                                <a href="/details/{{post.slug}}" class="position-relative d-block ">
+                                    <!-- <img src="{% static "image/m1.jpg" %}" alt="" class="img-fluid w-100 h-100"> -->
+                                    <img src="{{like.posts.image.url }}" alt="" class="img-fluid w-100 h-100">
+                                    <div class="video-play-btn">
+                                        <i class="fa fa-play"></i>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between video-category-time">
+                                        <h6 class="">{{like.posts.categories.first}}</h6>
+                                        <span class="vid-time">{{like.posts.created}}</span>
+                                    </div>
+                                    <div class="video-card-details">
+                                        <div>
+                                            <span>{{like.posts.views}}</span>
+                                            <i class="fa fa-eye"></i>
+                                        </div>
+                                        <div>
+                                            <span>{{like.posts.likes2.count}}</span>
+                                            <i class="fa fa-heart"></i>
+                                        </div>
+                                        <div>
+                                            <span>{{like.posts.comment.count}}</span>
+                                            <i class="fa fa-comment"></i>
+                                        </div>
+                                    </div>
+                                    <div class="article-overlay"></div>
+                                </a>
+    
+                            </div>
+                            <a href="video-detail.html">
+                                <h5 class="video-card-title m-2">{{like.posts.title}}</h5>
+                            </a>
+                            <div class="my-3 pb-3 mx-2">
+                                <i class="fa fa-user  ml-1 "></i>
+                                <span>{{like.posts.author}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                <!-- end item -->
+            </div>
+        </div>
+    </section>
+
+
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="{% static "components/bootstrap/bootstrap.bundle.js" %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+
+<script src="{% static "components/owl-carousel/owl.carousel.min.js" %}"></script>
+<script src="{% static "js/script.js " %}"></script>
+{% endblock %}
