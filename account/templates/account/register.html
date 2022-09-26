@@ -14,16 +14,23 @@ register
                         <div class="my-3 text-center">عضویت در سایت</div>
                         <form class="" method="post" action="">
                             {% csrf_token %}
-                            {{form.errors}}
+                            {% for error in form.errors.email %}
+                            <p class="alert alert-danger"dir="rtl">{{error}}</p>
+                            {% endfor %}
                             <div class="field">
                                 <i class="fa fa-envelope"></i>
                                 {{form.email}}
                             </div>
-
+                            {% for error in form.errors.password1 %}
+                            <p class="alert alert-danger" dir="rtl">{{error}}</p>
+                            {% endfor %}
                             <div class="field">
                                 <i class="fa fa-lock"></i>
                                 {{form.password1}}
                             </div>
+                            {% for error in form.errors.password2 %}
+                            <p class="alert alert-danger"dir="rtl">{{error}}</p>
+                            {% endfor %}
                             <div class="field">
                                 <i class="fa fa-lock"></i>
                                 {{form.password2}}
