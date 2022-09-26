@@ -2,13 +2,13 @@ from django.db import models
 from django.utils.text import slugify
 from account.models import User
 class Author(models.Model):
-    name = models.CharField(max_length=50)
-    image = models.ImageField(upload_to='Author_image')
-    discripsion = models.TextField(null=True, blank=True)
-    instagram = models.TextField(null=True, blank=True)
-    github = models.TextField(null=True, blank=True)
-    linkdin = models.TextField(null=True, blank=True)
-    twwiter = models.TextField(null=True, blank=True)
+    name = models.CharField(max_length=50, verbose_name = 'نام مدرس' )
+    image = models.ImageField(upload_to='Author_image', verbose_name = 'تصویر' )
+    discripsion = models.TextField(null=True, blank=True, verbose_name = 'درباره ی مدرس' )
+    instagram = models.TextField(null=True, blank=True, verbose_name = 'ادرس اینستاگرام' )
+    github = models.TextField(null=True, blank=True, verbose_name = 'ادرس گیت هاب' )
+    linkdin = models.TextField(null=True, blank=True, verbose_name = 'ادرس لینکدین' )
+    twwiter = models.TextField(null=True, blank=True, verbose_name = 'ادرس توییتر' )
     created = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
@@ -16,39 +16,39 @@ class Author(models.Model):
 
     class Meta:
         ordering =('-created',)
+        verbose_name_plural = 'مدرسان'
+
 class Categories(models.Model):
-    title = models.CharField(max_length=50,null=True, blank=True)
+    title = models.CharField(max_length=50,null=True, blank=True, verbose_name = 'اسم دسته بندی' )
     created = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.title
     class Meta:
         ordering =('-created',)
+        verbose_name_plural = 'دسته بندی ها'
 class Tags(models.Model):
-    title = models.CharField(max_length=50 , null=True, blank=True)
-    created = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=50 , null=True, blank=True , verbose_name = 'اسم تگ' )
+    created = models.DateTimeField(auto_now_add=True , verbose_name = 'زمان تولید' )
     def __str__(self):
         return self.title
     class Meta:
         ordering =('-created',)
-class objects_manager(models.Manager):
-    def like_click(self):
-        return self.filter(like_click=True)
+        verbose_name_plural = 'تگ ها'
+
 class Post(models.Model):
-    author = models.ForeignKey(Author , on_delete=models.CASCADE )
-    categories = models.ManyToManyField(Categories , help_text="دسته بندی" , related_name="posts")
-    tag = models.ManyToManyField(Tags , help_text="دسته بندی")
-    title = models.CharField(max_length=50)
-    discripsion = models.TextField()
-    video = models.FileField(null=True, blank=True , upload_to='Post_video')
-    image = models.ImageField(null=True, blank=True , upload_to='Post_image')
-    time = models.IntegerField(null=True, blank=True)
-    views = models.IntegerField(default=0)
-    like = models.IntegerField(default=0)
-    like_click = models.BooleanField(default=False)
-    objects = objects_manager()
+    author = models.ForeignKey(Author , on_delete=models.CASCADE , verbose_name = 'نام مدرس' )
+    categories = models.ManyToManyField(Categories , help_text="دسته بندی" , related_name="posts", verbose_name = 'دسته بندی ها' )
+    tag = models.ManyToManyField(Tags , help_text="دسته بندی", verbose_name = 'تگ ها' )
+    title = models.CharField(max_length=50, verbose_name = 'اسم پست به اینگلیسی و اصلی' )
+    title2 = models.CharField(max_length=50, verbose_name = 'اسم پست نمایشی به فارسی' )
+    discripsion = models.TextField(verbose_name = 'توضیحات' )
+    video = models.FileField(null=True, blank=True , upload_to='Post_video', verbose_name = 'ویدیو' )
+    image = models.ImageField(null=True, blank=True , upload_to='Post_image', verbose_name = 'عکس پست' )
+    time = models.IntegerField(null=True, blank=True, verbose_name = 'مدت زمان پست' )
+    views = models.IntegerField(default=0, verbose_name = 'دیده شده ها' )
     created = models.DateField(null=True, blank=True , auto_now_add=True)
     updated = models.DateField(null=True, blank=True , auto_now=True)
-    slug = models.SlugField(null=True, blank=True , unique=True , allow_unicode=True)
+    slug = models.SlugField(null=True, blank=True , unique=True , allow_unicode=True, verbose_name = 'اسلاگ' )
 
 
     def __str__(self):
@@ -56,6 +56,7 @@ class Post(models.Model):
 
     class Meta:
         ordering = ('-created',)
+        verbose_name_plural = 'پست ها'
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -95,12 +96,13 @@ class Comments(models.Model):
     
 
 class Notification(models.Model):
-    user = models.ForeignKey(User , related_name='notifications' , on_delete=models.CASCADE)
-    body = models.TextField(null=True, blank=True)
+    user = models.ForeignKey(User , related_name='notifications' , on_delete=models.CASCADE , verbose_name = 'کاربر ها' )
+    body = models.TextField(null=True, blank=True, verbose_name = 'توضیحات' )
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.body
     
     class Meta:
         ordering = ('-created_at',)
+        verbose_name_plural = 'اعلان ها'
 

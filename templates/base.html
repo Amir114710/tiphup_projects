@@ -51,7 +51,6 @@
                         </div>
                         <div class="dropdown-menu notification-menu-items custom-bg"
                             aria-labelledby="dropdownMenuButton">
-                            <a class="border-bottom" href="#"> ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ </a>
                             {% for item in request.user.notifications.all %}
                             <a class="border-bottom" href="#"> {{item.body}}</a>
                             {% endfor %}
