@@ -41,6 +41,7 @@
                                     <span>{{posts.views}}</span>
                                     <i class="fa fa-eye"></i>
                                 </div>
+                                {% if request.user.is_authenticated == True %}
                                 <div>  
                                     {% if is_liked %}
                                     <i onclick="like('{{posts.slug}}' , '{{posts.id}}')" id="like" style="color:red" class="fa-solid fa-heart"><span id="count">{{posts.likes2.count}}</span></i></a>                                    
@@ -48,7 +49,9 @@
                                     <i onclick="like('{{posts.slug}}' , '{{posts.id}}')" id="like" style="color:red" class="fa-regular fa-heart"><span id="count">{{posts.likes2.count}}</span></i></a>
                                     {% endif %}
                                 </div>
-
+                                {% else %}
+                                <p class="alert alert-danger"dir="rtl">برای لایک کردن این پست لطفا <a href="{% url 'account:login' %}">وارد سایت بشوید</a> یا اگر ثبت نام نکرده اید لطفا اول <a href="{% url 'account:register' %}">ثبت نام</a> کنید</p>
+                                {% endif %}
                             </div>
 
                         </div>
@@ -75,15 +78,19 @@
                                 <span>{{posts.comment.count}}</span>
                                 <span>نظر</span>
                             </div>
+                            {% if request.user.is_authenticated %}
                             <form method="post" action="">
                                 {% csrf_token %}
                                 <input type="hidden" name='parent_id'  id="parent_id" placeholder="parent_id">
                                 <textarea class="w-100 p-2 comment-area" name="message" id="" cols="30" rows="10"
                                 placeholder="دیدگاه خود را بنویسید"></textarea>
-                            <div class="d-flex align-items-center justify-content-end pt-3">
+                                <div class="d-flex align-items-center justify-content-end pt-3">
                                 <button type="submit" class="btn custom-btn">ارسال نظر</button>
                             </div>
                             </form>
+                            {% else %}
+                            <p class="alert alert-danger"dir="rtl">برای ارسال نظرات خود درباره ی این پست لطفا <a href="{% url 'account:login' %}">وارد سایت بشوید</a> یا اگر ثبت نام نکرده اید لطفا اول <a href="{% url 'account:register' %}">ثبت نام</a> کنید</p>
+                            {% endif %}
                             <!-- comment -->
                             {% for comment in posts.comment.all %}
                                 {% if comment.parent == None %}

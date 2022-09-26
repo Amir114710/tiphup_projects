@@ -28,10 +28,13 @@ class DetailsViewPost(DetailView):
         queryset = Post.objects.get(slug = self.object.slug)
         queryset.views += 1
         queryset.save()
-        if self.request.user.likes2.filter(posts__title = self.object.title , users_id = self.request.user.id).exists():
-            context['is_liked'] = True
+        if self.request.user.is_authenticated == True:
+            if self.request.user.likes2.filter(posts__title = self.object.title , users_id = self.request.user.id).exists():
+                context['is_liked'] = True
+            else:
+                context['is_liked'] = False
         else:
-            context['is_liked'] = False
+            pass
         return context 
     def post(self,request,slug):
         posts = Post.objects.get(slug=slug)

@@ -16,17 +16,21 @@
                         <div class="my-3 text-center">ورود به حساب</div>
                         <form  class="" method="POST">
                             {% csrf_token %}
-                            {{form.errors}}
                             {% if errors %}
                                 {% for item in errors %}
                                     <p class="text text-danger bg-white rounded" dir="rtl">{{item}}</p>
                                 {% endfor %}
                             {% endif %}
+                            {% for error in form.errors.username %}
+                            <p class="alert alert-danger"dir="rtl">{{error}}</p>
+                            {% endfor %}
                             <div  class="field" >
                                     <i class="fa fa-envelope"></i>
                                     {{form.username}}
                             </div>
-
+                            {% for error in form.errors.password %}
+                            <p class="alert alert-danger"dir="rtl">{{error}}</p>
+                            {% endfor %}
                             <div class="field">
                                     <i class="fa fa-lock"></i>
                                     {{form.password}}
