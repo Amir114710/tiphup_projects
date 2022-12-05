@@ -154,6 +154,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    'account.athentication.PhoneAthentication',
 )
 
 LOGIN_REDIRECT_URL = '/'
@@ -196,5 +198,3 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
-
-AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend','account.athentication.PhoneAthentication']

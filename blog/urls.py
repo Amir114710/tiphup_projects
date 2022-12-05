@@ -9,5 +9,6 @@ urlpatterns = [
     path('categories/<int:pk>' , views.Category_details.as_view() , name='category'),
     path('like/<slug:slug>/<int:pk>' , views.like , name='like'),
     path('search' , views.SearchBox.as_view() , name='search'),
+    path('seen' , views.notification_seen , name='seen'),
 ]
 

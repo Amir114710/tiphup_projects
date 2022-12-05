@@ -5,6 +5,7 @@ from .models import Comments, Like, Post , Categories , Notification
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.core.paginator import Paginator
+
 class BlogView(ListView):
     model = Post
     template_name = 'blog/all-videos.html'
@@ -13,7 +14,7 @@ class BlogView(ListView):
     def get_context_data(self , *args, **kwargs):
         context = super(BlogView, self).get_context_data(*args, **kwargs)
         if self.request.user.notifications.filter(user_id=self.request.user.id):
-            context['notifications'] = Notification.objects.all()
+            context['notifications'] = self.request.user.notifications.all()
         else:
             pass
         return context
@@ -36,6 +37,7 @@ class DetailsViewPost(DetailView):
         else:
             pass
         return context 
+
     def post(self,request,slug):
         posts = Post.objects.get(slug=slug)
         parent_id = request.POST.get('parent_id')
@@ -80,5 +82,9 @@ def like(request , slug , pk):
 
     # return redirect('blog_app:details' , slug)
 
-
+def notification_seen(request):
+    Notification.seen == True
+    if Notification.seen == True:
+        Notification.delete()
+    return render(request , 'blog/all-videos.html')
 
