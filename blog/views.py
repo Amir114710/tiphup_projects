@@ -65,7 +65,7 @@ class SearchBox(TemplateView):
 
     def get(self, request, *args, **kwargs):
         q = request.GET.get('q')
-        queryset = Post.objects.filter(title__icontains = q)
+        queryset = Post.objects.filter(title2__icontains = q)
         page_number = request.GET.get('page')
         paginator = Paginator(queryset , 6)
         objects = paginator.get_page(page_number)
